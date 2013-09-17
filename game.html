@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Ruby Workshop - Roberto Soares - SINFORM 2013</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" media="screen">
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500);
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+      body { 
+        font-family: 'Ubuntu';
+        font-weight: 400;
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin: 5px;
+      }
+      h1 { font-size: 4em; }
+      h2 { font-size: 2.3em; }
+      h3 { font-size: 1.6em; }
+      body { font-size: 1.5em; }
+
+      .slide .content {
+        padding: 10px 90px !important;
+      }
+
+      #slideshow .no-highlight {
+        font-size: 1em !important;
+      }
+
+      blockquote {
+        font-style: italic;
+        margin: 0.25em 0;
+        padding: 0.25em 40px;
+        line-height: 1.45;
+        position: relative;
+      }
+
+      blockquote:before {
+        opacity: 0.8;
+        display: block;
+        content: "\201C";
+        font-size: 3em;
+        position: absolute;
+        left: -20px;
+        top: -20px;
+      }
+
+      blockquote cite {
+        opacity: 0.8;
+        font-size: 1em;
+        display: block;
+        margin-top: 5px;
+      }
+ 
+      blockquote cite:before {
+        content: "\2014 \2009";
+      }
+
+     /* Two-column layout */
+    .left-column {
+      width: 50%;
+      float: left;
+    }
+    .right-column {
+      width: 50%;
+      float: right;
+    }
+
+    code {
+      -moz-border-radius: 5px;
+      -web-border-radius: 5px;
+      background: #e7e8e2;
+      border-radius: 5px;
+    }
+
+    .inverse {
+      background: #A60A17;
+    }
+
+    /* slides */
+
+    .bg-red {
+      background: #A60A17;
+    }
+    .bg-dark {
+      color: white;
+      text-shadow: 0 0 20px #333;
+    }
+    .bg-matz {
+      background-image:url(images/matz.jpg);
+    }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+name: inverse
+class: center, middle, bg-red, bg-dark
+layout: true
+---
+# #game
+---
+layout: false
+
+![Default-aligned image](images/game.png)
+
+---
+## Biblioteca Gosu
+
+--
+### Jogos 2D
+
+--
+### Hello Game!
+--
+
+* Crie uma pasta para o jogo (`mkdir`)
+--
+
+* Crie um arquivo `game.rb`
+--
+
+```
+require 'gosu'
+```
+--
+
+```
+class Game < Gosu::Window
+  def initialize
+    super(600,600, false)
+  end
+end
+```
+--
+
+```
+game = Game.new
+game.show
+```
+---
+
+```
+require 'gosu'
+```
+--
+
+Disponibilizar componentes de outros arquivos
+--
+
+Importa [Gosu::Window](http://www.libgosu.org/rdoc/Gosu/Window.html)
+
+```
+class Game < Gosu::Window
+```
+---
+
+```
+def initialize
+```
+
+Construtor. Inicializa o objeto.
+
+--
+
+```
+game = Game.new
+```
+
+Aloca espaço na memória e executa o método initialize.
+---
+
+```
+super(600,600, false)
+```
+--
+
+Chama o mesmo método na super classe (ou classe mãe).
+--
+
+No caso o construtor.
+
+---
+
+```
+game.show
+```
+
+Executa o método `show` herdado de Gosu::Window.
+
+--
+
+Qualquer método de Gosu::Window pode ser utilizado.
+
+---
+### Alterar o título da janela
+
+```
+self.caption = 'Sky Cleanup'
+```
+
+--
+
+```
+game.caption = 'Sky Cleanup'
+```
+
+--
+
+[caption](http://www.libgosu.org/rdoc/Gosu/Window.html#caption-instance_method) é um método de instância de Gosu::Window.
+
+---
+
+### Adicionar o background
+--
+
+Arquivos no [gist](https://gist.github.com/roberto/6576752).
+
+--
+
+Utilizando a classe [Gosu::Image](http://www.libgosu.org/rdoc/Gosu/Image.html).
+--
+
+```
+@background = Gosu::Image.new(self, "images/bg.png", true)
+```
+--
+
+```
+self
+```
+
+--
+Referência ao seu objeto, instância de Game. 
+
+--
+
+Cada imagem no Gosu deve estar relacionada com uma Janela (Window).
+
+--
+
+```
+def initialize
+  super(600,600, false)
+  self.caption = 'Sky Cleanup'
+  @background = Gosu::Image.new(self, "images/bg.png", true)
+end
+```
+---
+
+### Desenhando o Background
+--
+
+Definimos o método draw.
+--
+
+```
+def draw
+{{content}}
+end
+```
+
+--
+    @background.draw(0,0,0)
+--
+
+```
+x, y, z
+```
+---
+
+![Default-aligned image](images/game-bg.png)
+
+---
+
+### Adicionar o avião
+
+* Criar arquivo 'plane.rb'
+
+--
+
+```
+require_relative 'plane'
+```
+
+--
+
+```
+class Plane
+  def initialize(game)
+    @x = 100
+    @y = 100
+    @sprite = Gosu::Image.load_tiles(game,"images/planes.png",66,67,true)[0..2]
+  end
+
+  def draw
+    @sprite[Gosu::milliseconds / 100 % @sprite.size].draw_rot(@x, @y, 1, 0)
+  end
+end
+```
+
+[gist](https://gist.github.com/roberto/6590242)
+
+---
+
+Alterando a classe Game:
+
+```
+def initialize
+  super(600,600, false)
+  # ...
+  @plane = Plane.new(self)
+end
+
+def draw
+  @plane.draw
+  @background.draw(0,0,0)
+end
+```
+---
+
+### Tarefas
+
+* Alterar a cor do avião (mudando o sprite usado)
+--
+
+* Executar o programa
+--
+
+* Calcular uma melhor posição inicial do avião
+  * Utilizar game.width (largura) e game.height (altura)
+
+---
+
+### Movimentar o avião
+
+--
+
+Método update, executado a cada atualização.
+
+```
+def update
+{{content}}
+end
+```
+
+--
+  @plane.left   if button_down? Gosu::KbLeft
+  @plane.right  if button_down? Gosu::KbRight
+---
+
+### Tarefa
+
+* Implementar métodos left(esquerda) e right (direita).
+--
+
+* Implementar limites da tela.
+
+---
+
+### Adicionando asteróides [(gist)](https://gist.github.com/roberto/6590397)
+
+--
+
+```
+class Asteroid
+  def initialize(game)
+    @sprite=Gosu::Image.load_tiles(game,"images/asteroids.png",320/5,384/6,true)
+    @x, @y = 100, 100
+  end
+  def update
+  end
+  def draw
+    @sprite[Gosu::milliseconds / 50 % @sprite.size].draw_rot(@x, @y, 3, 0)
+  end
+end
+```
+
+--
+
+Alterando a classe Game:
+
+```
+def initialize
+  @asteroid = Asteroid.new(self)
+end
+def update
+  @asteroid.update
+end
+def draw
+  @asteroid.draw
+end
+```
+---
+
+### Tarefas
+
+* Iniciar do topo 
+--
+
+* Queda. (atualizar posição durante update)
+--
+
+* Iniciar numa posição randômica, utilizando [Gosu.random(?, ?)](http://www.libgosu.org/rdoc/Gosu.html#random-class_method)
+--
+
+* Ao sair da tela, deve voltar para o topo em outra posição.
+
+--
+* Colisão!
+  * Exemplo: [Gosu::distance(a.x, a.y, b.x, b.y)](http://www.libgosu.org/rdoc/Gosu.html#distance-class_method) < distance
+  * Verificar durante udpate
+--
+* Adicionar um asteróide a cada 10 segundos
+  * [Gosu::milliseconds](http://www.libgosu.org/rdoc/Gosu.html#milliseconds-class_method)
+---
+
+## Gostou?
+[@bt1](http://twitter.com/bt1)  
+
+[Recomende-me no WWR!](http://www.workingwithrails.com/person/9376-roberto-soares)  
+
+[http://blog.robertosoares.me/](http://blog.robertosoares.me/)
+
+    </textarea>
+    <div id="slideshow"></div>
+ <script src="remark-0.4.2.min.js" type="text/javascript">
+      {"highlightStyle": "monokai",
+       "highlightLanguage": "ruby" }
+    </script>
+  </body>
+</html>
