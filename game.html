@@ -292,6 +292,7 @@ require_relative 'plane'
 ```
 class Plane
   def initialize(game)
+    @game = game
     @x = 100
     @y = 100
     @sprite = Gosu::Image.load_tiles(game,"images/planes.png",66,67,true)[0..2]
