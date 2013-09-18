@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Ruby Workshop - Roberto Soares - SINFORM 2013</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" media="screen">
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500);
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+      body { 
+        font-family: 'Ubuntu';
+        font-weight: 400;
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin: 5px;
+      }
+      h1 { font-size: 4em; }
+      h2 { font-size: 2.3em; }
+      h3 { font-size: 1.6em; }
+      body { font-size: 1.5em; }
+
+      .slide .content {
+        padding: 10px 90px !important;
+      }
+
+      #slideshow .no-highlight {
+        font-size: 1em !important;
+      }
+
+      blockquote {
+        font-style: italic;
+        margin: 0.25em 0;
+        padding: 0.25em 40px;
+        line-height: 1.45;
+        position: relative;
+      }
+
+      blockquote:before {
+        opacity: 0.8;
+        display: block;
+        content: "\201C";
+        font-size: 3em;
+        position: absolute;
+        left: -20px;
+        top: -20px;
+      }
+
+      blockquote cite {
+        opacity: 0.8;
+        font-size: 1em;
+        display: block;
+        margin-top: 5px;
+      }
+ 
+      blockquote cite:before {
+        content: "\2014 \2009";
+      }
+
+     /* Two-column layout */
+    .left-column {
+      width: 50%;
+      float: left;
+    }
+    .right-column {
+      width: 50%;
+      float: right;
+    }
+
+    code {
+      -moz-border-radius: 5px;
+      -web-border-radius: 5px;
+      background: #e7e8e2;
+      border-radius: 5px;
+    }
+
+    .inverse {
+      background: #A60A17;
+    }
+
+    /* slides */
+
+    .bg-red {
+      background: #A60A17;
+    }
+    .bg-dark {
+      color: white;
+      text-shadow: 0 0 20px #333;
+    }
+    .bg-matz {
+      background-image:url(images/matz.jpg);
+    }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+name: inverse
+class: center, middle, bg-red, bg-dark
+layout: true
+---
+# #ranking
+---
+layout: false
+
+* Serviço para armazenar a pontuação
+--
+
+* Página com a lista de pontuação
+--
+
+* Envio da pontuação
+
+---
+* Jogo -> Aplicativo WEB
+
+--
+  * HTTP
+--
+
+  * Lista: GET
+  * Envio: POST
+--
+
+
+### [Sinatra](http://www.sinatrarb.com/)
+--
+
+* Web Framework
+--
+
+* gem install sinatra
+--
+
+* gem install shotgun
+
+---
+
+* novo arquivo: ranking.rb
+
+--
+
+```
+require 'sinatra'
+
+get '/' do
+  "Hello World!"
+end
+```
+--
+
+```
+ruby ranking.rb
+```
+--
+
+* http://localhost:4567/
+* http://localhost:9393/
+
+---
+### Armazenar/Ler os dados
+
+--
+* Criar o arquivo 'scores.txt'
+
+--
+* Escrever no arquivo:
+
+```
+200
+300
+```
+--
+
+* Ler arquivo:
+
+```
+get '/' do
+    File.open('scores.txt', 'r')
+end
+```
+--
+
+* http://localhost:4567/
+* http://localhost:9393/
+
+---
+
+* Escrever no arquivo:
+
+```
+post '/add' do
+  file = File.open('scores.txt', 'a')
+  file.puts(params[:score])
+  file.close
+end
+```
+
+--
+* Obs: pode usar 'get' em vez de 'post' para testes:
+
+```
+get '/add/:score' do #...
+```
+---
+
+### Enviando os dados
+
+--
+
+```
+require 'net/http'
+```
+
+--
+
+```
+Net::HTTP.post_form(URI('http://localhost:9393/add'), score: 100)
+```
+---
+Tarefas:
+
+* Adicionar nome do jogador
+  * gets ou [TextInput](http://www.libgosu.org/rdoc/Gosu/TextInput.html)
+* Envie o tempo de jogo em segundos
+* Melhorar a página mostrando todos os dados
+
+---
+
+## Gostou?
+[@bt1](http://twitter.com/bt1)  
+
+[Recomende-me no WWR!](http://www.workingwithrails.com/person/9376-roberto-soares)  
+
+[http://blog.robertosoares.me/](http://blog.robertosoares.me/)
+
+    </textarea>
+    <div id="slideshow"></div>
+ <script src="remark-0.4.2.min.js" type="text/javascript">
+      {"highlightStyle": "monokai",
+       "highlightLanguage": "ruby" }
+    </script>
+  </body>
+</html>
