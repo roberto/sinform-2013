@@ -4,7 +4,7 @@
   <head>
     <title>Ruby Workshop - Roberto Soares - SINFORM 2013</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style type="text/css" media="screen">
+    <style type="text/css">
       @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500);
       @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 
@@ -91,6 +91,7 @@
     }
     .bg-matz {
       background-image:url(images/matz.jpg);
+      background-size: cover !important;
     }
 
     </style>
@@ -196,7 +197,7 @@ class: bg-matz, bg-dark
 ## Matz + Perl + Python + Smalltalk + Lisp = Ruby
 --
 
-<blockquote>Eu queria uma linguagem mais poderosa que o **Perl** e mais orientada a objeto que **Python**</blockquote>
+> Eu queria uma linguagem mais poderosa que o **Perl** e mais orientada a objeto que **Python**
 
 --
 
@@ -1533,9 +1534,11 @@ template: inverse
 
     </textarea>
     <div id="slideshow"></div>
- <script src="https://github.com/downloads/gnab/remark/remark-0.4.2.min.js" type="text/javascript">
-      {"highlightStyle": "monokai",
-       "highlightLanguage": "ruby" }
+<script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({"highlightStyle": "monokai",
+       "highlightLanguage": "ruby" });
     </script>
   </body>
 </html>
